@@ -1,10 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { HiDocumentText, HiMenuAlt1, HiX } from "react-icons/hi";
+import { MdAccountCircle, MdOutlineDashboardCustomize, MdOutlineReviews } from "react-icons/md";
+import { Link, Outlet } from 'react-router-dom';
 
 const UserDashboard = () => {
+    const [showMenu, setShowMenu] = useState(false)
+
+    const menus = [
+        {name: "Dashboard", route:"/dashboard", icon: <MdOutlineDashboardCustomize/>},
+        {name: "My Order", route:"my-order", icon: <HiDocumentText/>},
+        {name: "Add Review", route:"add-review", icon: <MdOutlineReviews/>},
+        {name: "My Account", route:"my-account", icon: <MdAccountCircle/>},
+    ]
     return (
-        <div>
-            User dashboard
+        <section className="bg-light-main dark:bg-dark-main ">
+        <div className="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 md:py-4 lg:px-8">
+            <div className="w-full bg-universal py-2 flex justify-between items-center px-4">
+                <div>
+                <ul className=" justify-center space-x-8 hidden md:flex">
+                    {menus.map(menu => <li><Link className="text-white flex items-center space-x-1" to={menu.route}>{menu?.icon} <span>{menu.name}</span></Link></li>)}
+                </ul>
+                {/* Mobile menu */}
+                <div className="relative md:hidden ">
+                    <span onClick={()=> setShowMenu(!showMenu)} className='text-2xl text-white cursor-pointer'>{showMenu ? <HiX/> :<HiMenuAlt1/>}</span>
+                  <div className={`absolute top-8 ${showMenu ? 'block' : 'hidden'}`}>
+                    <ul className="space-y-2 rounded-md bg-white text-black w-[130px] px-2 py-4 shadow-lg">
+                    {menus.map(menu => <li><Link className="text-sm hover:text-universal flex items-center space-x-1" to={menu.route}>{menu.icon} <span>{menu.name}</span></Link></li>)}
+                    </ul>
+                  </div>
+                </div>
+                </div>
+                <div>
+                    <img className="w-[36px] h-[36px] rounded-full ring-2 ring-white" src="" alt="" />
+                </div>
+            </div>
+
+            {/* Dashboard outlet component */}
+            <div className='py-4'>
+                <Outlet/>
+            </div>
         </div>
+        </section>
     );
 };
 

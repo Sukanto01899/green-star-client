@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { HiX } from "react-icons/hi";
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
+import { HiLogout, HiX } from "react-icons/hi";
+import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { HumbugerMenu } from '../../../assets/icons/icons';
+import auth from '../../../firebase.init';
 
 const Navigation = () => {
   const [show, setShow] = useState(false);
+  const [user] = useAuthState(auth);
+  const [signOut, loading, error] = useSignOut(auth);
 
   
   const menus = [
@@ -30,7 +35,7 @@ const Navigation = () => {
       <div className="hidden md:block"> 
         <nav aria-label="Site Nav">
           <ul className="flex items-center gap-6 text-sm">
-           {menus.map(menu =>  <li>
+           {menus.map((menu, index) =>  <li key={index}>
               <Link
                 className="text-gray-500 transition hover:text-gray-500/75 dark:text-white"
                 to={menu.route}
@@ -44,20 +49,34 @@ const Navigation = () => {
 
       <div className="flex items-center gap-4">
         <div className="sm:flex sm:gap-4">
-          <Link
+          {user ? <Link
+            className="rounded-md flex items-center space-x-2 bg-universal px-5 py-2.5 text-sm font-medium text-white shadow"
+            to="/dashboard"
+          >
+            <MdOutlineDashboardCustomize/>
+            <span>Dashboard</span>
+          </Link> : <Link
             className="rounded-md bg-universal px-5 py-2.5 text-sm font-medium text-white shadow"
             to="/login"
           >
             Login
-          </Link>
+          </Link>}
 
           <div className="hidden sm:flex">
-            <Link
+            
+            {user ? <button
+              className="flex items-center space-x-2 rounded-md bg-light-main px-5 py-2.5 text-sm font-medium text-universal"
+              onClick={()=> signOut()}
+            >
+              <span>Log out</span>
+              <HiLogout/>
+            </button> : <Link
               className="rounded-md bg-light-main px-5 py-2.5 text-sm font-medium text-universal"
-              to="/registration"
+              to='/registration'
             >
               Register
-            </Link>
+            </Link>}
+
           </div>
         </div>
 
@@ -79,15 +98,21 @@ const Navigation = () => {
 
           <div className='mt-20'>
           <ul className='space-y-4'>
-             {menus.map(menu => <li className="rounded-lg dark:text-white dark:hover:bg-dark-hover  hover:bg-gray-100 pl-8 py-2 text-gray-700"><Link to={menu.route}>{menu.name}</Link></li>)}
+             {menus.map((menu, index) => <li key={index} className="rounded-lg dark:text-white dark:hover:bg-dark-hover  hover:bg-gray-100 pl-8 py-2 text-gray-700"><Link to={menu.route}>{menu.name}</Link></li>)}
              
              <div className="sm:hidden">
-            <Link
+            {user ? <button
+              className="flex items-center space-x-2 rounded-md bg-light-main px-5 py-2.5 text-sm font-medium text-universal"
+              onClick={()=> signOut()}
+            >
+              <span>Log out</span>
+              <HiLogout/>
+            </button> : <Link
               className="rounded-md w-full bg-gray-100 ml-8 px-5 py-2.5 text-sm font-medium text-universal"
               to='/register'
             >
               Register
-            </Link>
+            </Link>}
           </div>
           </ul>
           </div>

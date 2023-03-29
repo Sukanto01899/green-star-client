@@ -1,24 +1,51 @@
 import React from 'react';
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { FaUser } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AtRateIcon, EyeIcon } from '../../assets/icons/icons';
+import auth from '../../firebase.init';
+import useToken from '../../hooks/useToken';
 import GoogleLogin from './GoogleLogin';
+import Loader from './Loader';
+
 
 const Registration = () => {
   const { register, handleSubmit, watch,reset, formState: { errors } } = useForm();
-  const onRegistration = data => {
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useCreateUserWithEmailAndPassword(auth, {sendEmailVerification: true});
+  const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+  const navigate = useNavigate();
+  const [token] = useToken(user, 'user')
+  
+  const onRegistration =async  (data) => {
     const {name, email, password, confirmPass} = data;
     if(password !== confirmPass){
       toast.error("Password not match");
       return;
     }
-  };
+    await createUserWithEmailAndPassword(email, password);
+    await updateProfile({displayName: name});
+  }
 
+  if(token){
+    navigate('/')
+  }
+
+  if(error){
+    toast.error(error.message)
+  }
+  
+  
     return (
         
 <div>
+  {loading || updating ? <Loader/> : null}
 <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
   <div className="mx-auto max-w-lg">
     <h1 className="text-center text-2xl font-bold text-universal sm:text-3xl">
@@ -37,7 +64,7 @@ const Registration = () => {
       <p className="text-center text-lg font-medium">Sign up for an account</p>
 
       <div>
-        <label for="email" className="sr-only">Name</label>
+        <label htmlFor="email" className="sr-only">Name</label>
 
         <div className="relative">
           <input
@@ -57,7 +84,7 @@ const Registration = () => {
       </div>
 
       <div>
-        <label for="email" className="sr-only">Email</label>
+        <label htmlFor="email" className="sr-only">Email</label>
 
         <div className="relative">
           <input
@@ -77,7 +104,7 @@ const Registration = () => {
       </div>
 
       <div>
-        <label for="password" className="sr-only">Password</label>
+        <label htmlFor="password" className="sr-only">Password</label>
 
         <div className="relative">
           <input
@@ -97,7 +124,7 @@ const Registration = () => {
       </div>
 
       <div>
-        <label for="password" className="sr-only">Confirm Password</label>
+        <label htmlFor="password" className="sr-only">Confirm Password</label>
 
         <div className="relative">
           <input

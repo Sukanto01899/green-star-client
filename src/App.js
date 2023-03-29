@@ -1,8 +1,6 @@
 import 'animate.css';
-import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import axiosApi from './api/axiosApi';
 import './App.css';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import AdminLogin from './pages/AdminDashboard/AdminPage/AdminLogin/AdminLogin';
@@ -19,17 +17,15 @@ import Navigation from './pages/Home/Shared/Navigation';
 import Login from './pages/Login/Login';
 import Registration from './pages/Login/Registration';
 import ProductPage from './pages/ProductPage/ProductPage';
+import UserDashboard from './pages/UserDashboard.js/UserDashboard';
+import AddReview from './pages/UserDashboard.js/UserDashboardPage/AddReview/AddReview';
+import DashboardHome from './pages/UserDashboard.js/UserDashboardPage/dashboardHome/DashboardHome';
+import MyAccount from './pages/UserDashboard.js/UserDashboardPage/MyAccount/MyAccount';
+import MyOrder from './pages/UserDashboard.js/UserDashboardPage/MyOrder/MyOrder';
 
 
 function App() {
   const {pathname} = useLocation()
-  console.log(pathname)
-
-  useEffect(()=>{
-    axiosApi.get('/')
-    .then(data => console.log(data
-      ))
-  }, [])
  
   if(pathname.includes('/admin')){
     return (
@@ -58,6 +54,12 @@ function App() {
         <Route path='/registration' element={<Registration/>}></Route>
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/purchase/:id' element={<ProductPage/>}></Route>
+        <Route path='/dashboard' element={<UserDashboard/>}>
+          <Route index element={<DashboardHome/>}/>
+          <Route path='my-order' element={<MyOrder/>}/>
+          <Route path='add-review' element={<AddReview/>}/>
+          <Route path='my-account' element={<MyAccount/>}/>
+        </Route>
         <Route path='*' element={<Error/>}></Route>
       </Routes>
       <Footer/>

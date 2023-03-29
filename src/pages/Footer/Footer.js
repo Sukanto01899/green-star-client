@@ -5,7 +5,7 @@ import { DribbleIcon, FacebookIcon, GithubIcon, InstagramIcon, TwitterIcon } fro
 const Footer = () => {
     return (
         <div>
-<footer aria-label="Site Footer" className="bg-light-main dark:bg-dark-main">
+<footer aria-label="Site Footer" className=" dark:bg-dark-main">
   <div className="mx-auto max-w-screen-xl px-4 pt-16 pb-8 sm:px-6 lg:px-8">
     <div className="mx-auto max-w-md">
       <strong
@@ -16,7 +16,7 @@ const Footer = () => {
 
       <form className="mt-6">
         <div className="relative max-w-lg">
-          <label className="sr-only" for="email"> Email </label>
+          <label className="sr-only" htmlFor="email"> Email </label>
 
           <input
             className="w-full rounded-full border-universal bg-light-main outline-none p-4 pr-32 text-sm font-medium"
