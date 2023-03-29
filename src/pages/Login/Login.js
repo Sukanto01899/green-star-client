@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AtRateIcon, EyeIcon } from '../../assets/icons/icons';
 import auth from '../../firebase.init';
@@ -22,7 +23,11 @@ const Login = () => {
   const onLogin = data => {
     const {email, password} = data
     signInWithEmailAndPassword(email, password)
-  };
+  }
+  
+  if(error){
+    toast.error(error.message)
+  }
 
   useEffect(()=>{
     if(token){

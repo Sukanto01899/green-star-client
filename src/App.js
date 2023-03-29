@@ -22,6 +22,7 @@ import AddReview from './pages/UserDashboard.js/UserDashboardPage/AddReview/AddR
 import DashboardHome from './pages/UserDashboard.js/UserDashboardPage/dashboardHome/DashboardHome';
 import MyAccount from './pages/UserDashboard.js/UserDashboardPage/MyAccount/MyAccount';
 import MyOrder from './pages/UserDashboard.js/UserDashboardPage/MyOrder/MyOrder';
+import UserAuth from './RequireAuth/UserAuth';
 
 
 function App() {
@@ -53,7 +54,7 @@ function App() {
         <Route path='/' element={<Home/>}></Route>
         <Route path='/registration' element={<Registration/>}></Route>
         <Route path='/login' element={<Login/>}></Route>
-        <Route path='/purchase/:id' element={<ProductPage/>}></Route>
+        <Route path='/purchase/:id' element={<UserAuth><ProductPage/></UserAuth>}></Route>
         <Route path='/dashboard' element={<UserDashboard/>}>
           <Route index element={<DashboardHome/>}/>
           <Route path='my-order' element={<MyOrder/>}/>

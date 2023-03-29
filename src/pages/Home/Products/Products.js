@@ -1,45 +1,10 @@
 import React from 'react';
+import useProducts from '../../../hooks/useProducts';
 import ProductCard from './ProductCard';
 
 const Products = () => {
-    const products = [
-        {
-            id: 1,
-            name: 'ROBOT Gaming R900S Pro 256GB M.2 PCIe NVMe SSD',
-            img: 'https://www.startech.com.bd/robot-gaming-r900s-pro-256gb-nvme-ssd',
-            desc: 'he ROBOT Gaming R900S Pro uses PCIe M.2 NVMe interface which has excellent transferring efficiency compatibility.'
-        },
-        {
-            id: 1,
-            name: 'ROBOT Gaming R900S Pro 256GB M.2 PCIe NVMe SSD',
-            img: 'https://www.startech.com.bd/robot-gaming-r900s-pro-256gb-nvme-ssd',
-            desc: 'he ROBOT Gaming R900S Pro uses PCIe M.2 NVMe interface which has excellent transferring efficiency compatibility.'
-        },
-        {
-            id: 1,
-            name: 'ROBOT Gaming R900S Pro 256GB M.2 PCIe NVMe SSD',
-            img: 'https://www.startech.com.bd/robot-gaming-r900s-pro-256gb-nvme-ssd',
-            desc: 'he ROBOT Gaming R900S Pro uses PCIe M.2 NVMe interface which has excellent transferring efficiency compatibility.'
-        },
-        {
-            id: 1,
-            name: 'ROBOT Gaming R900S Pro 256GB M.2 PCIe NVMe SSD',
-            img: 'https://www.startech.com.bd/robot-gaming-r900s-pro-256gb-nvme-ssd',
-            desc: 'he ROBOT Gaming R900S Pro uses PCIe M.2 NVMe interface which has excellent transferring efficiency compatibility.'
-        },
-        {
-            id: 1,
-            name: 'ROBOT Gaming R900S Pro 256GB M.2 PCIe NVMe SSD',
-            img: 'https://www.startech.com.bd/robot-gaming-r900s-pro-256gb-nvme-ssd',
-            desc: 'he ROBOT Gaming R900S Pro uses PCIe M.2 NVMe interface which has excellent transferring efficiency compatibility.'
-        },
-        {
-            id: 1,
-            name: 'ROBOT Gaming R900S Pro 256GB M.2 PCIe NVMe SSD',
-            img: 'https://www.startech.com.bd/robot-gaming-r900s-pro-256gb-nvme-ssd',
-            desc: 'he ROBOT Gaming R900S Pro uses PCIe M.2 NVMe interface which has excellent transferring efficiency compatibility.'
-        },
-    ]
+    const [products] = useProducts()
+    
     return (
         <section className=' dark:bg-dark-main bg-light-main'>
             <div className="xl:w-25 mx-auto text-black px-4 py-8 sm:py-12 sm:px-6 lg:py-12 lg:px-0">
@@ -57,7 +22,7 @@ const Products = () => {
 
 {/* Product grid */}
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8'>
-        {products.map(product => <ProductCard product={product}/>)}
+        {products?.map(product => <ProductCard product={product}/>)}
     </div>
 
   </div>
