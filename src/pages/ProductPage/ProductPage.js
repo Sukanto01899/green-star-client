@@ -1,18 +1,49 @@
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import axiosApi from '../../api/axiosApi';
 import { StarIconFill, StarIconHole } from '../../assets/icons/icons';
+import auth from '../../firebase.init';
 import Description from './Description';
 import Reviews from './Reviews';
 import Specification from './Specification';
 
 const ProductPage = () => {
   const {id} = useParams();
+  const [user, loading, error] = useAuthState(auth);
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1)
   useEffect(()=>{
     axiosApi(`/product/${id}`)
     .then(res => setProduct(res.data))
   }, [id])
+
+  const decreaseQuantity = ()=>{
+    if(quantity <= 1) return;
+    setQuantity(quantity - 1)
+  }
+  const increaseQuantity = ()=>{
+    if(quantity >= product?.stock){
+      toast.error("Out of stock")
+      return;
+    }
+    setQuantity(quantity + 1)
+  }
+
+  const handlePurchase = ()=>{
+    if(quantity < product.minBuy){
+      toast.error(`min bye ${product.minBuy}`)
+      return;
+    }
+  
+    axiosApi.post('/order', {title: product.title,userEmail: user.email,productId: product._id,quantity, price: product.price * quantity, status: 'pending'})
+    .then(res => {
+      if(res.data.insertedId){
+        toast.success('Product added to purchase')
+      }
+    })
+  }
   
     return (
       <div className='bg-light-main'>
@@ -103,29 +134,53 @@ const ProductPage = () => {
           <a href="#more-info" className="mt-2 text-universal text-md font-medium underline">View more info</a>
         </div>
 
-        <form className="mt-8">
+        <div className="mt-8">
 
           <div className="mt-8 flex gap-4">
-            <div>
-              <label htmlhtmlFor="quantity" className="sr-only">Qty</label>
+          
 
-              <input
-                type="number"
-                id="quantity"
-                min="1"
-                value="1"
-                className="w-12 rounded border-gray-200 py-3 text-center text-xs [-moz-appearance:_textfield] [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
-              />
-            </div>
+<div>
+  <label for="Quantity" class="sr-only"> Quantity </label>
+
+  <div class="flex items-center rounded border border-gray-200">
+    <button
+      onClick={decreaseQuantity}
+      type="button"
+      class="h-10 w-10 leading-10 text-gray-600 transition hover:opacity-75"
+    >
+      &minus;
+    </button>
+
+    <span>
+      <input
+       onChange={(e)=>setQuantity(parseInt(e.target.value))}
+        type="number"
+        id="Quantity"
+        value={quantity}
+        class="h-10 w-16 border-y-0 border-gray-200 text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
+      />
+    </span>
+
+    <button
+      onClick={increaseQuantity}
+      type="button"
+      class="h-10 w-10 leading-10 text-gray-600 transition hover:opacity-75"
+    >
+      &#43;
+    </button>
+  </div>
+</div>
+
 
             <button
+             onClick={handlePurchase}
               type="submit"
               className="block rounded bg-universal px-5 py-3 text-xs font-medium text-white hover:bg-green-500"
             >
               Purchase
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>

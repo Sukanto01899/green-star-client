@@ -55,7 +55,7 @@ function App() {
         <Route path='/registration' element={<Registration/>}></Route>
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/purchase/:id' element={<UserAuth><ProductPage/></UserAuth>}></Route>
-        <Route path='/dashboard' element={<UserDashboard/>}>
+        <Route path='/dashboard' element={<UserAuth><UserDashboard/></UserAuth>}>
           <Route index element={<DashboardHome/>}/>
           <Route path='my-order' element={<MyOrder/>}/>
           <Route path='add-review' element={<AddReview/>}/>

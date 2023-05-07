@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
+import axiosApi from '../../../../api/axiosApi';
+import auth from '../../../../firebase.init';
 import OrderRow from './OrderRow';
 
 const MyOrder = () => {
+  const [order, setOrder] = useState(null);
+  const [user, loading, error] = useAuthState(auth);
+
+  useEffect(()=>{
+    axiosApi.get(`/order-list/${user.email}?state=all`)
+    .then(res => setOrder(res.data))
+  }, [user.email])
+
+  const getOrderByState = (state)=>{
+    axiosApi.get(`/order-list/${user.email}?state=${state}`)
+    .then(res => setOrder(res.data))
+  }
+  
     return (
         <div>
             <h1 className='text-xl'>My Order</h1>
@@ -37,22 +53,22 @@ const MyOrder = () => {
         <th
           class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Name
+          Product
         </th>
         <th
           class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Date of Birth
+          Order ID
         </th>
         <th
           class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Role
+          Quantity
         </th>
         <th
           class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Salary
+          Price
         </th>
         <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">Action</th>
       </tr>
