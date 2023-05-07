@@ -8,7 +8,7 @@ const DashboardHome = () => {
     const [orders, setOrders] = useState([]);
     
     useEffect(()=>{
-        axiosApi.post(`/order-list/${user.email}`)
+        axiosApi.post(`/order-list/${user.email}?status=all`)
         .then(res => setOrders(res.data))
     }, [user.email])
 

@@ -10,7 +10,6 @@ const Navigation = () => {
   const [show, setShow] = useState(false);
   const [user] = useAuthState(auth);
   const [signOut, loading, error] = useSignOut(auth);
-
   
   const menus = [
     {name: 'Home', route: '/'},
@@ -21,6 +20,11 @@ const Navigation = () => {
     {name: 'Project', route: '/project'},
     {name: 'Blog', route: '/blog'},
   ]
+
+  const handleLogout = ()=>{
+    localStorage.removeItem('access-token');
+    signOut();
+  }
     return (
       <header aria-label="Site Header" className="bg-white dark:bg-slate-700 border-b-1 border-black">
   <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -66,7 +70,7 @@ const Navigation = () => {
             
             {user ? <button
               className="flex items-center space-x-2 rounded-md bg-light-main px-5 py-2.5 text-sm font-medium text-universal"
-              onClick={()=> signOut()}
+              onClick={handleLogout}
             >
               <span>Log out</span>
               <HiLogout/>
