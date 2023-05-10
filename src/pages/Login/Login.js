@@ -21,7 +21,7 @@ const Login = () => {
   const from = location?.state?.from?.pathname || '/'
   const [token] = useToken(user, 'user')
   const onLogin = data => {
-    const {email, password} = data
+    const {email, password} = data;
     signInWithEmailAndPassword(email, password)
   }
   

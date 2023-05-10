@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
+import { toast } from 'react-hot-toast';
 import axiosApi from '../../../../api/axiosApi';
 import auth from '../../../../firebase.init';
 import OrderRow from './OrderRow';
@@ -8,11 +9,18 @@ const MyOrder = () => {
   const [orders, setOrders] = useState([])
   const [user, loading] = useAuthState(auth);
   const [orderStatus, setOrderStatus] = useState('all');
+  const [signOut] = useSignOut(auth)
 
   useEffect(()=>{
     axiosApi.post(`/order-list/${user.email}?status=${orderStatus}`)
     .then(res => setOrders(res.data))
-  }, [orderStatus, user.email])
+    .catch(err => {
+      toast.error(err.code)
+      if(err.response.status===403 || err.response.status === 401){
+        return signOut()
+      }
+    })
+  }, [orderStatus, user.email, signOut])
 
   const handleStatus = (status)=>{
     setOrderStatus(status);

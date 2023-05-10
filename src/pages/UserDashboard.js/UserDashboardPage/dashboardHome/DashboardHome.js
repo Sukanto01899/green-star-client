@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
+import { toast } from 'react-hot-toast';
 import axiosApi from '../../../../api/axiosApi';
 import auth from '../../../../firebase.init';
 
 const DashboardHome = () => {
     const [user] = useAuthState(auth);
     const [orders, setOrders] = useState([]);
+    const [signOut] = useSignOut(auth)
     
     useEffect(()=>{
         axiosApi.post(`/order-list/${user.email}?status=all`)
         .then(res => setOrders(res.data))
-    }, [user.email])
+        .catch(err => {
+            toast.error(err.code)
+            if(err.response.status === 403 || err.response.status === 401){
+                return signOut()
+            }
+        })
+    }, [user.email, signOut])
 
     const orderState = [
         {state: "Pending Order", count: orders.filter(order => order.status === 'pending').length},

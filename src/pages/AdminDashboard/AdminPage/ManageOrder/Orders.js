@@ -1,73 +1,106 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import ProductRow from '../ManageProduct/ProductRow';
+import { useEffect, useState } from 'react';
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
+import { toast } from 'react-hot-toast';
+import axiosApi from '../../../../api/axiosApi';
+import auth from '../../../../firebase.init';
+import OrderRow from './OrderRow';
 
-const Orders = () => {
+const MyOrder = () => {
+  const [orders, setOrders] = useState([])
+  const [user, loading] = useAuthState(auth);
+  const [orderStatus, setOrderStatus] = useState('all');
+  const [signOut] = useSignOut(auth)
+
+  useEffect(()=>{
+    axiosApi(`/all-orders/${user.email}?status=${orderStatus}`)
+    .then(res => setOrders(res.data))
+    .catch(err => {
+      toast.error(err.code)
+      if(err.response.status===403 || err.response.status === 401){
+        return signOut()
+      }
+    })
+  }, [signOut, orderStatus, user.email])
+
+  const handleStatus = (status)=>{
+    setOrderStatus(status);
+  }
+  
     return (
         <div>
-            <h1 className='text-xl mb-5'>All Order</h1>
+            <h1 className='text-xl'>All Order</h1>
 
-            {/* Order Tab */}
             <div>
-            <nav class="flex border-b border-gray-100 text-sm font-medium">
-  <Link href="" class="-mb-px border-b border-current p-4 text-cyan-500">
+            <nav className="flex border-b border-gray-100 text-sm font-medium">
+  <button onClick={()=> handleStatus('all')} className={`-mb-px border-b ${'all'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
     All order
-  </Link>
+  </button>
 
-  <Link href="" class="-mb-px border-b border-transparent p-4 hover:text-cyan-500">
-    Panding
-  </Link>
+  <button onClick={()=> handleStatus('pending')}  className={`-mb-px border-b ${'pending'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
+    Pending
+  </button>
 
-  <Link href="" class="-mb-px border-b border-transparent p-4 hover:text-cyan-500">
+  <button onClick={()=> handleStatus('paid')} className={`-mb-px border-b ${'paid'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
     Paid
-  </Link>
+  </button>
 
-  <Link href="" class="-mb-px border-b border-transparent p-4 hover:text-cyan-500">
-    Shiped
-  </Link>
+  <button onClick={()=> handleStatus('shipped')} className={`-mb-px border-b ${'shipped'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
+    Shipped
+  </button>
+  
+  <button onClick={()=> handleStatus('canceled')} className={`-mb-px border-b ${'canceled'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
+    Canceled
+  </button>
 </nav>
-            </div>
+
+</div>
 
 
 {/* table */}
 
-<div class="overflow-x-auto bg-white">
-  <table class="min-w-full divide-y-2 divide-gray-200 text-sm">
+<div className="overflow-x-auto bg-white">
+  <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
     <thead>
       <tr>
         <th
-          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+          className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Name
+          Product
         </th>
         <th
-          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+          className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Date of Birth
+          Order ID
         </th>
         <th
-          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+          className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Role
+          Quantity
         </th>
         <th
-          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+          className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Salary
+          Price
         </th>
-        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">Action</th>
+        <th
+          className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+          Status
+        </th>
+        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">Action</th>
       </tr>
     </thead>
 
-    <tbody class="divide-y divide-gray-200">
+    <tbody className="divide-y divide-gray-200">
      
-      <ProductRow/>
+      {orders.map((order, _id) => <OrderRow key={_id} order={order}/>)}
     </tbody>
   </table>
 </div>
 
+            
         </div>
     );
 };
 
-export default Orders;
+export default MyOrder;

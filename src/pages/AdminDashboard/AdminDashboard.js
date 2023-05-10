@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { HiChevronDown, HiDocumentText, HiPlusCircle, HiShoppingBag, HiShoppingCart, HiUserAdd, HiUserGroup, HiUsers, HiViewGrid, HiX } from 'react-icons/hi';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { HiChevronDown, HiDocumentText, HiPlusCircle, HiShoppingBag, HiShoppingCart, HiUsers, HiViewGrid, HiX } from 'react-icons/hi';
 import { Link, Outlet } from 'react-router-dom';
-import { HumbugerMenu } from '../../assets/icons/icons';
+import { HumbugerMenu, Invoice } from '../../assets/icons/icons';
+import auth from '../../firebase.init';
 
 const AdminDashboard = () => {
-    const [show, setShow] = useState(false)
+    const [show, setShow] = useState(false);
+    const [user, loading] = useAuthState(auth);
     useEffect(()=>{
         window.addEventListener('scroll', function(){
             const navigation = document.querySelector('.navigation');
@@ -31,43 +34,16 @@ const AdminDashboard = () => {
         <span className="text-sm font-medium"> Dashboard </span>
       </Link>
 
-      <details className="group [&_summary::-webkit-details-marker]:hidden">
-        <summary
-          className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-        >
-          <div className="flex items-center gap-2">
-            <HiUserGroup className={`h-5 w-5 opacity-75 md:block ${show || 'hidden'}`}/>
+      <Link
+        to="/admin/all-user"
+        className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+      >
+        <HiUsers className='h-5 w-5 opacity-75'/>
 
-            <span className="text-sm font-medium"> Manage Users </span>
-          </div>
+        <span className="text-sm font-medium"> Users </span>
+      </Link>
 
-          <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-            <HiChevronDown className={`h-5 w-5 md:block ${show || 'hidden'}`}/>
-          </span>
-        </summary>
-
-        <nav aria-label="Teams Nav" className="mt-2 flex flex-col px-4">
-          <Link
-            to="/admin/all-user"
-            className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-          >
-            <HiUsers className='h-5 w-5 opacity-75'/>
-
-            <span className="text-sm font-medium"> All Users </span>
-          </Link>
-
-          <Link
-            to="/admin/add-user"
-            className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-          >
-            <HiUserAdd className='h-5 w-5 opacity-75'/>
-
-            <span className="text-sm font-medium"> Add User </span>
-          </Link>
-        </nav>
-      </details>
-
-
+      
 
       <details className="group [&_summary::-webkit-details-marker]:hidden">
         <summary
@@ -114,27 +90,14 @@ const AdminDashboard = () => {
         <span className="text-sm font-medium"> Orders </span>
       </Link>
 
-      <a
-        href="#"
+      <Link
+        to="/admin/Invoices"
         className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 opacity-75"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-          />
-        </svg>
+        <Invoice/>
 
         <span className="text-sm font-medium"> Invoices </span>
-      </a>
+      </Link>
 
       <details className="group [&_summary::-webkit-details-marker]:hidden">
         <summary
@@ -251,16 +214,16 @@ const AdminDashboard = () => {
   <div className={`sticky inset-x-0 bottom-0 border-t border-gray-100 md:block ${show || 'hidden'}`}>
     <Link to="#" className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
       <img
-        alt="Man"
-        src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-        className="h-10 w-10 rounded-full object-cover"
+        alt={user?.displayName}
+        src={user?.photoURL}
+        className="h-10 w-10 rounded-full object-cover ring-2 ring-universal"
       />
 
       <div>
         <p className="text-xs">
-          <strong className="block font-medium">Eric Frusciante</strong>
+          <strong className="block font-medium">{user?.displayName}</strong>
 
-          <span> eric@frusciante.com </span>
+          <span> {user?.email} </span>
         </p>
       </div>
     </Link>
