@@ -36,6 +36,14 @@ const OrderRow = ({order}) => {
   Remove
 </button></>
    : null}
+  {
+    status === 'shipped' ? <button
+    class="inline-block p-2 text-gray-700 hover:bg-gray-50 focus:relative"
+    title="Delete Product"
+  >
+    Rate Now
+  </button> : null
+  }
 </span>
 
         </td>

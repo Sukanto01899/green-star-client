@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSignOut } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
 import axiosApi from '../api/axiosApi';
 import auth from '../firebase.init';
 
 const useAdmin = (user) => {
-    const [admin, setAdmin] = useState(false);
+    const [admin, setAdmin] = useState(true);
     const [adminLoading, setAdminLoading] = useState(true);
-    const [signOut] = useSignOut(auth);
-    const navigate = useNavigate()
+    const [signOut] = useSignOut(auth)
 
     useEffect(()=>{
         const email = user?.email;
@@ -16,16 +14,17 @@ const useAdmin = (user) => {
             axiosApi(`/admin-login/${email}`)
             .then(res => {
                 if(res.data.admin){
-                    setAdmin(true)
+                    setAdmin(res.data.admin)
                     setAdminLoading(false)
                 }
             })
             .catch(err => {
-                
+                setAdminLoading(false)
+                signOut()
             })
         }
         
-    }, [user])
+    }, [user,admin, signOut])
     return [admin, adminLoading]
 };
 

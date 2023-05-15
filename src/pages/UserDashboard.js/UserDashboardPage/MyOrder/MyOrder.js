@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { toast } from 'react-hot-toast';
+import { RotatingLines } from 'react-loader-spinner';
 import axiosApi from '../../../../api/axiosApi';
+import PopupBG from '../../../../components/Popup/PopupBG';
 import auth from '../../../../firebase.init';
 import OrderRow from './OrderRow';
 
 const MyOrder = () => {
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState(null)
   const [user, loading] = useAuthState(auth);
   const [orderStatus, setOrderStatus] = useState('all');
   const [signOut] = useSignOut(auth)
@@ -23,6 +25,7 @@ const MyOrder = () => {
   }, [orderStatus, user.email, signOut])
 
   const handleStatus = (status)=>{
+    setOrders(null)
     setOrderStatus(status);
   }
   
@@ -93,7 +96,15 @@ const MyOrder = () => {
 
     <tbody className="divide-y divide-gray-200">
      
-      {orders.map((order, _id) => <OrderRow key={_id} order={order}/>)}
+      {orders ? orders.map((order, _id) => <OrderRow key={_id} order={order}/>) : <PopupBG>
+      <RotatingLines
+  strokeColor="grey"
+  strokeWidth="5"
+  animationDuration="0.75"
+  width="96"
+  visible={true}
+/>
+        </PopupBG>}
     </tbody>
   </table>
 </div>

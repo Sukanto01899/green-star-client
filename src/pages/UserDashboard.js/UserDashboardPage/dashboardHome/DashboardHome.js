@@ -6,7 +6,7 @@ import auth from '../../../../firebase.init';
 
 const DashboardHome = () => {
     const [user] = useAuthState(auth);
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState(null);
     const [signOut] = useSignOut(auth)
     
     useEffect(()=>{
@@ -21,10 +21,10 @@ const DashboardHome = () => {
     }, [user.email, signOut])
 
     const orderState = [
-        {state: "Pending Order", count: orders.filter(order => order.status === 'pending').length},
-        {state: "Paid Order", count: orders.filter(order => order.status === 'paid').length},
-        {state: "Received Order", count: orders.filter(order => order.status === 'received').length},
-        {state: "Canceled Order", count: orders.filter(order => order.status === 'canceled').length}
+        {state: "Pending Order", count: orders ? orders.filter(order => order.status === 'pending').length : 'Loading...'},
+        {state: "Paid Order", count: orders ? orders.filter(order => order.status === 'paid').length : 'Loading...'},
+        {state: "Received Order", count: orders ? orders.filter(order => order.status === 'shipped').length : 'Loading...'},
+        {state: "Canceled Order", count: orders ? orders.filter(order => order.status === 'canceled').length : 'Loading...'}
     ]
 
     return (

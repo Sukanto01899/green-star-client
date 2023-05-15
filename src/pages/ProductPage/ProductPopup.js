@@ -8,7 +8,10 @@ import auth from '../../firebase.init';
 const ProductPopup = ({product, setShowPopup, setConfirmPopup}) => {
     const [user] = useAuthState(auth)
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-   
+    const date = new Date();
+    const day = date.getDay();
+    const month = date.getMonth();
+    const year = date.getFullYear()
 
     const handlePurchase = (data)=>{
         const {address, number, quantity} = data
@@ -17,7 +20,7 @@ const ProductPopup = ({product, setShowPopup, setConfirmPopup}) => {
           return;
         }
       
-        axiosApi.post('/order', {title: product.title,userEmail: user.email,productId: product._id,quantity, price: product.price * quantity,address: address,number: number, status: 'pending'})
+        axiosApi.post('/order', {title: product.title,userEmail: user.email,productId: product._id,quantity, price: product.price * quantity,address: address,number: number, status: 'pending', time: `${day}-${month}-${year}`})
         .then(res => {
           if(res.data.insertedId){
             toast.success('Product added to purchase')

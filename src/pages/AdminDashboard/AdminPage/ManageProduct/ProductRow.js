@@ -1,7 +1,8 @@
 import React from 'react';
 import { DeleteIcon, EditIcon } from '../../../../assets/icons/icons';
 
-const ProductRow = () => {
+const ProductRow = ({product}) => {
+  const {} = product;
     return (
         <tr>
         <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">

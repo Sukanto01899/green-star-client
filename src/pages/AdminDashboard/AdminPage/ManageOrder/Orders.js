@@ -1,36 +1,90 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { toast } from 'react-hot-toast';
-import axiosApi from '../../../../api/axiosApi';
+import { RotatingLines } from 'react-loader-spinner';
+import { NextIcon, PreviousIcon } from '../../../../assets/icons/icons';
+import PopupBG from '../../../../components/Popup/PopupBG';
 import auth from '../../../../firebase.init';
 import OrderRow from './OrderRow';
 
 const MyOrder = () => {
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState(null);
   const [user, loading] = useAuthState(auth);
   const [orderStatus, setOrderStatus] = useState('all');
-  const [signOut] = useSignOut(auth)
+  const [signOut] = useSignOut(auth);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+
 
   useEffect(()=>{
-    axiosApi(`/all-orders/${user.email}?status=${orderStatus}`)
-    .then(res => setOrders(res.data))
+    axios(`http://localhost:5000/all-order/${user.email}?status=${orderStatus}&limit=${limit}&page=${page}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+      }
+    })
+    .then(res => {
+      const {count, orders: all_orders} = res.data;
+      setOrders(all_orders);
+      setTotalPages(Math.ceil(count / limit))
+    })
     .catch(err => {
       toast.error(err.code)
       if(err.response.status===403 || err.response.status === 401){
         return signOut()
       }
     })
-  }, [signOut, orderStatus, user.email])
+  }, [signOut, orderStatus, user.email, limit, page, totalPages])
 
   const handleStatus = (status)=>{
+    setOrders(null)
     setOrderStatus(status);
+  }
+
+  const handlePrevious = ()=>{
+    if (page <= 0) return;
+    let count = page
+    setPage(count -=1)
+  }
+
+  const handleNext = ()=>{
+    if (totalPages === page) return;
+    let count = page
+    setPage(count +=1)
+  }
+
+  // Handle order status change
+  const handleStatusChange = async (id, status, setShowPopup)=>{
+    const loadingToast = toast.loading('Please wait...');
+    try{
+      const response = await axios.patch(`http://localhost:5000/order/status-change/${id}?status=${status}`, {
+      Headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+      }
+    })
+    if(response.data.acknowledged){
+      toast.success(`Successfully ${status}`, {
+        id: loadingToast
+      })
+      setShowPopup(false)
+    }
+    }
+    catch(err){
+      toast.error(err.message)
+    }
+    
+      
   }
   
     return (
         <div>
             <h1 className='text-xl'>All Order</h1>
 
-            <div>
+
+           
+
+            <div className='flex justify-between items-center'>
             <nav className="flex border-b border-gray-100 text-sm font-medium">
   <button onClick={()=> handleStatus('all')} className={`-mb-px border-b ${'all'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
     All order
@@ -52,6 +106,15 @@ const MyOrder = () => {
     Canceled
   </button>
 </nav>
+
+{/* Limit Input */}
+<div>
+   <select onChange={(e)=> setLimit(e.target.value)} className='h-[35px] w-[80px] text-sm rounded-md'>
+      <option value='10'>10</option>
+      <option value='15'>15</option>
+      <option value='20'>20</option>
+    </select>
+</div>
 
 </div>
 
@@ -93,12 +156,42 @@ const MyOrder = () => {
 
     <tbody className="divide-y divide-gray-200">
      
-      {orders.map((order, _id) => <OrderRow key={_id} order={order}/>)}
+      {orders ? orders.map((order, _id) => <OrderRow key={_id} order={order} handleStatusChange={handleStatusChange}/>) : <PopupBG>
+      <RotatingLines
+  strokeColor="grey"
+  strokeWidth="5"
+  animationDuration="0.75"
+  width="96"
+  visible={true}
+/>
+        </PopupBG>}
     </tbody>
   </table>
 </div>
 
-            
+
+{/* Pagination */}
+<div class="flex items-center justify-center mt-4 gap-3">
+  <button onClick={()=> handlePrevious()}
+    class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+  >
+    <span class="sr-only">Next Page</span>
+    <PreviousIcon/>
+  </button>
+
+  <p class="text-sm text-gray-900">
+    {page + 1}
+    <span class="mx-0.25">/</span>
+    {totalPages}
+  </p>
+
+  <button onClick={()=> handleNext()}
+    class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+  >
+    <span class="sr-only">Next Page</span>
+    <NextIcon/>
+  </button>
+</div>
         </div>
     );
 };

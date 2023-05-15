@@ -41,6 +41,7 @@ function App() {
            <Route path="/admin/add-product" element={<AddProduct/>}/>
            <Route path="/admin/orders" element={<Orders/>}/>
            <Route path="/admin/all-user" element={<AllUser/>}/>
+           <Route path="*" element={<Error/>}/>
          </Route>
        </Routes>
        </>

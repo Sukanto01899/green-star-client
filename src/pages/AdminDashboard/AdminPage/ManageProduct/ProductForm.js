@@ -1,0 +1,237 @@
+import axios from 'axios';
+import React, { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { HiXMark } from "react-icons/hi2";
+import { useParams } from 'react-router-dom';
+import { PlusIcon } from '../../../../assets/icons/icons';
+import auth from '../../../../firebase.init';
+import './manageproduct.css';
+
+
+const ProductForm = () => {
+    const {id} = useParams();
+    const [user] = useAuthState(auth);
+    const { register, handleSubmit, watch,reset, formState: { errors } } = useForm();
+    const [product, setProduct] = useState({});
+    const [features, setFeatures] = useState([]);
+    const [description, setDescription] = useState('')
+    const imageStorageApi = 'AlN0wiEY4TqGmgs9RiW6Iz';
+
+    const handleAddProduct = (data)=>{
+        const {productName, model, minBuy, price, stock, brand, code, image} = data;
+        const file = image[0];
+        
+        const url = `https://www.filestackapi.com/api/store/S3?key=${imageStorageApi}`;
+
+        const productObj = {
+            title: productName,
+            description: description,
+            minBuy: parseInt(minBuy),
+            stock: parseInt(stock),
+            price: parseInt(price),
+            model: model,
+            brand: brand,
+            code: parseInt(code),
+            features: features
+        }
+
+       fetch(url, {
+        method: 'POST',
+        body: file
+       })
+       .then(res => res.json())
+       .then(data => {
+         if(data.url){
+            const product = {...productObj, image: data.url}
+            axios.post(`http://localhost:5000/product/upload/${user.email}`, {product}, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                }
+            })
+            .then(res => {
+                if(res.acknowledged){
+                    toast.success('Product successfully added')
+                }
+            })
+            .catch(err => toast.error(err.message))
+         }
+       })
+       .catch(err => toast.error(err.message))
+    }
+
+    const handleFeature =()=>{
+        let featureForm = document.getElementById('featureForm');
+        const featureFormValue = featureForm.value;
+        if(!featureFormValue){
+            return;
+        }
+        setFeatures([...features, featureFormValue])
+        featureForm.value = ''
+    }
+    const handleCancelFeature = (i)=>{
+        const all_feature = [...features];
+        all_feature.splice(i, 1)
+        setFeatures(all_feature)
+    }
+    
+    return (
+        
+             <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+        <form onSubmit={handleSubmit(handleAddProduct)} class="space-y-4">
+          <div>
+            <label class="sr-only" for="name">Product Name</label>
+            <input
+              class="w-full rounded-lg border-gray-200 p-3 text-sm"
+              placeholder="Product Name"
+              type="text"
+              id="name"
+              {...register('productName', {required: true})}
+            />
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+            <div>
+              <label class="sr-only" for="brand">Brand</label>
+              <input
+                class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Brand"
+                type="text"
+                id="brand"
+              />
+            </div>
+
+            <div>
+              <label class="sr-only" for="model">Model</label>
+              <input
+                class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Model"
+                type="text"
+                id="model"
+                {...register('model', {required: true})}
+              />
+            </div>
+
+            <div>
+              <label class="sr-only" for="code">Code</label>
+              <input
+                class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Code"
+                type="text"
+                id="code"
+                {...register('code', {required: true})}
+              />
+            </div>
+          </div>
+
+         {/* Price, stock, minBuy */}
+          <div class="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+            <div>
+              
+            <label class="sr-only" for="price">Price</label>
+              <input
+                class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Price"
+                type="number"
+                id="price"
+                {...register('price', {required: true})}
+              />
+
+            </div>
+
+            <div>
+            <label class="sr-only" for="stock">Stock</label>
+              <input
+                class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Stock"
+                type="number"
+                id="stock"
+                {...register('stock', {required: true})}
+              />
+            </div>
+
+            <div>
+            <label class="sr-only" for="minBuy">Minimum Buy</label>
+              <input
+                class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Minimum Buy"
+                type="number"
+                id="minBuy"
+                {...register('minBuy', {required: true})}
+              />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label class="sr-only" for="message">Message</label>
+            <textarea
+              class="w-full rounded-lg border-gray-200 p-3 text-sm"
+              placeholder="Write Description"
+              rows="5"
+              id="message"
+              onChange={(e)=> setDescription(e.target.value)}
+            ></textarea>
+          </div>
+
+          {/* Feature */}
+            <div>
+                <div aria-label="Main Nav" className="flex flex-col space-y-1 mb-3">
+                {features.map((feature, i)=> <p
+    class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 hover:text-gray-700 flex justify-between items-center"
+  >
+    <span>{feature}</span>
+    <HiXMark onClick={()=> handleCancelFeature(i)} className='text-red-500 text-xl'/>
+  </p>)}
+                </div>
+                
+            <div class="relative">
+  <label for="featureForm" class="sr-only"> Feature </label>
+
+  <input
+    type="text"
+    id="featureForm"
+    placeholder="Add Feature"
+    class="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
+  />
+
+  <span class="absolute inset-y-0 right-0 grid w-10 place-content-center">
+    <div onClick={handleFeature}
+      class="rounded-full bg-universal p-0.5 text-white hover:bg-green-700"
+    >
+      <span class="sr-only">Submit</span>
+      <PlusIcon/>
+    </div>
+  </span>
+</div>
+            </div>
+
+            {/* Image upload */}
+            <div>
+            <label class="sr-only" for="image">Minimum Buy</label>
+              <input
+                class="w-full rounded-lg border-2 border-gray-200 p-1 text-md"
+                placeholder="Upload File"
+                type="file"
+                id="image"
+                {...register('image', {required: true})}
+              />
+            </div>
+          
+
+          <div class="mt-4">
+            <button
+              type="submit"
+              class="inline-block w-full rounded-lg bg-universal px-5 py-3 font-medium text-white sm:w-auto"
+            >
+             Add Product
+            </button>
+          </div>
+        </form>
+      </div>
+        
+    );
+};
+
+export default ProductForm;

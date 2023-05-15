@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
+import { RotatingLines } from 'react-loader-spinner';
 import { useNavigate } from 'react-router-dom';
 import axiosApi from '../../../../api/axiosApi';
 import { AtRateIcon, EyeIcon } from '../../../../assets/icons/icons';
+import PopupBG from '../../../../components/Popup/PopupBG';
 import auth from '../../../../firebase.init';
 import useToken from '../../../../hooks/useToken';
 
 const AdminLogin = () => {
   const { register, handleSubmit, watch,reset, formState: { errors } } = useForm();
+  const [apiLoading, setApiLoading] = useState(false)
   const [
     signInWithEmailAndPassword,
     user,
@@ -21,10 +24,12 @@ const AdminLogin = () => {
 
   const handleAdminLogin = (data)=>{
     const {email, password} = data;
+    setApiLoading(true)
     axiosApi(`/admin-login/${email}`)
     .then(res => {
       if(res.data.admin){
-        signInWithEmailAndPassword(email, password)
+        signInWithEmailAndPassword(email, password);
+        setApiLoading(false)
       }
     })
     .catch(err => toast.error(err.message))
@@ -34,6 +39,7 @@ const AdminLogin = () => {
     toast.error(error.message)
   }
 
+
   if(token){
     toast.success('Hi admin')
     navigate('/admin')
@@ -41,6 +47,16 @@ const AdminLogin = () => {
   
     return (
         <div>
+
+          {apiLoading || loading ? <PopupBG>
+            <RotatingLines
+  strokeColor="grey"
+  strokeWidth="5"
+  animationDuration="0.75"
+  width="96"
+  visible={true}
+/>
+          </PopupBG> : null}
 
 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-lg">
