@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PopupContent = ({order, setShowShippingPopup, handleStatusChange}) => {
+const ShippingPopup = ({order, setShowShippingPopup, handleStatusChange}) => {
     const {title, userEmail, productId, quantity, price, status, _id, address, phone} = order;
     const order_info = [
         {detail: 'Product Name',info: title},
@@ -45,4 +45,4 @@ const PopupContent = ({order, setShowShippingPopup, handleStatusChange}) => {
     );
 };
 
-export default PopupContent;
+export default ShippingPopup;

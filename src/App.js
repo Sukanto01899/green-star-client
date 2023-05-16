@@ -11,6 +11,7 @@ import Orders from './pages/AdminDashboard/AdminPage/ManageOrder/Orders';
 import AddProduct from './pages/AdminDashboard/AdminPage/ManageProduct/AddProduct';
 import AllProduct from './pages/AdminDashboard/AdminPage/ManageProduct/AllProduct';
 import AllUser from './pages/AdminDashboard/AdminPage/ManageUser/AllUser';
+import Security from './pages/AdminDashboard/AdminPage/Security';
 import Error from './pages/Error/Error';
 import Footer from './pages/Footer/Footer';
 import Home from './pages/Home/Home';
@@ -41,6 +42,7 @@ function App() {
            <Route path="/admin/add-product" element={<AddProduct/>}/>
            <Route path="/admin/orders" element={<Orders/>}/>
            <Route path="/admin/all-user" element={<AllUser/>}/>
+           <Route path="/admin/security" element={<Security/>}/>
            <Route path="*" element={<Error/>}/>
          </Route>
        </Routes>
