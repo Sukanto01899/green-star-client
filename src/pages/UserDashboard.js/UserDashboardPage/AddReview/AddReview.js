@@ -12,7 +12,7 @@ const AddReview = () => {
     const [showReviewPopup, setShowReviewPopup] = useState(false);
 
     useEffect(()=>{
-        axiosApi.post(`/order-list/${user.email}?status=shipped`)
+        axiosApi.get(`/order-list/${user.email}?status=shipped`)
         .then(res => setOrders(res.data))
     }, [user.email])
     

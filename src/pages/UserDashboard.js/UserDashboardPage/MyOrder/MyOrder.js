@@ -14,7 +14,7 @@ const MyOrder = () => {
   const [signOut] = useSignOut(auth)
 
   useEffect(()=>{
-    axios.post(`http://localhost:5000/order-list/${user.email}?status=${orderStatus}`,{}, {
+    axios.get(`http://localhost:5000/order-list/${user.email}?status=${orderStatus}`, {
       headers:{
         'authorization': `Bearer ${localStorage.getItem('access-token')}`
       }

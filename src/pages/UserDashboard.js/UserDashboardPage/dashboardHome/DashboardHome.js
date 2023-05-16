@@ -10,7 +10,7 @@ const DashboardHome = () => {
     
     useEffect(()=>{
         fetch(`http://localhost:5000/order-list/${user.email}?status=all`,{
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('access-token')}`
             }
