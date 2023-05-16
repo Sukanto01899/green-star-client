@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { toast } from 'react-hot-toast';
-import axiosApi from '../../../../api/axiosApi';
 import auth from '../../../../firebase.init';
 
 const DashboardHome = () => {
@@ -10,15 +9,21 @@ const DashboardHome = () => {
     const [signOut] = useSignOut(auth)
     
     useEffect(()=>{
-        axiosApi.post(`/order-list/${user.email}?status=all`)
-        .then(res => setOrders(res.data))
+        fetch(`http://localhost:5000/order-list/${user.email}?status=all`,{
+            method: 'POST',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('access-token')}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => setOrders(data))
         .catch(err => {
-            toast.error(err.code)
+            toast.error(err.message)
             if(err.response.status === 403 || err.response.status === 401){
                 return signOut()
             }
         })
-    }, [user.email, signOut])
+    }, [user, signOut])
 
     const orderState = [
         {state: "Pending Order", count: orders ? orders.filter(order => order.status === 'pending').length : 'Loading...'},

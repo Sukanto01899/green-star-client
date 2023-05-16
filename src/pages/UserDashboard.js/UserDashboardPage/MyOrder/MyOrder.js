@@ -1,8 +1,8 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { toast } from 'react-hot-toast';
 import { RotatingLines } from 'react-loader-spinner';
-import axiosApi from '../../../../api/axiosApi';
 import PopupBG from '../../../../components/Popup/PopupBG';
 import auth from '../../../../firebase.init';
 import OrderRow from './OrderRow';
@@ -14,7 +14,11 @@ const MyOrder = () => {
   const [signOut] = useSignOut(auth)
 
   useEffect(()=>{
-    axiosApi.post(`/order-list/${user.email}?status=${orderStatus}`)
+    axios.post(`http://localhost:5000/order-list/${user.email}?status=${orderStatus}`,{}, {
+      headers:{
+        'authorization': `Bearer ${localStorage.getItem('access-token')}`
+      }
+    })
     .then(res => setOrders(res.data))
     .catch(err => {
       toast.error(err.code)
