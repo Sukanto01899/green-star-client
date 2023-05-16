@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const OrderRow = ({order}) => {
-  const {title, userEmail, productId, quantity, price, status, _id} = order
+const OrderRow = ({order, handleOrderCancel}) => {
+  const {title, userEmail, productId, quantity, price, status, _id} = order;
+  const navigation = useNavigate()
     return (
         <tr>
         <td title={title} class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -30,14 +32,15 @@ const OrderRow = ({order}) => {
     Pay Now
   </button>
   <button
+  onClick={()=> handleOrderCancel(_id)}
   class="inline-block p-2 text-gray-700 hover:bg-gray-50 focus:relative"
   title="Delete Product"
 >
-  Remove
+  Cancel
 </button></>
    : null}
   {
-    status === 'shipped' ? <button
+    status === 'shipped' ? <button onClick={()=> navigation('/dashboard/add-review')}
     class="inline-block p-2 text-gray-700 hover:bg-gray-50 focus:relative"
     title="Delete Product"
   >

@@ -32,6 +32,21 @@ const MyOrder = () => {
     setOrders(null)
     setOrderStatus(status);
   }
+
+  const handleOrderCancel = (id)=>{
+    const loadingToast = toast.loading('Please wait...')
+    axios.patch(`http://localhost:5000/order/cancel/${id}`,{}, {
+        headers: {
+            'authorization': `Bearer ${localStorage.getItem('access-token')}`
+        }
+    })
+    .then(res => {
+        if(res.data.acknowledged){
+            toast.success('Order canceled', {id: loadingToast})
+        }
+    })
+    .catch(err => toast.error(err.message, {id: loadingToast}))
+}
   
     return (
         <div>
@@ -100,7 +115,7 @@ const MyOrder = () => {
 
     <tbody className="divide-y divide-gray-200">
      
-      {orders ? orders.map((order, _id) => <OrderRow key={_id} order={order}/>) : <PopupBG>
+      {orders ? orders.map((order, _id) => <OrderRow handleOrderCancel={handleOrderCancel} key={_id} order={order}/>) : <PopupBG>
       <RotatingLines
   strokeColor="grey"
   strokeWidth="5"
