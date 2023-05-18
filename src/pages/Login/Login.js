@@ -1,10 +1,10 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { RotatingLines } from 'react-loader-spinner';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import axiosApi from '../../api/axiosApi';
 import { AtRateIcon, EyeIcon } from '../../assets/icons/icons';
 import PopupBG from '../../components/Popup/PopupBG';
 import auth from '../../firebase.init';
@@ -29,7 +29,7 @@ const Login = () => {
   const onLogin = data => {
     setApiLoading(true)
     const {email, password} = data;
-    axiosApi(`/user-verify/${email}`)
+    axios(`https://green-star.onrender.com/user-verify/${email}`)
     .then(res => {
      if(res.data.user){
       signInWithEmailAndPassword(email, password)
@@ -37,7 +37,6 @@ const Login = () => {
      }
     })
     .catch(err => {
-      console.log('problem')
       setApiLoading(false)
       toast.error(err.message)
     })
