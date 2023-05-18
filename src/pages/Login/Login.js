@@ -37,6 +37,7 @@ const Login = () => {
      }
     })
     .catch(err => {
+      console.log('problem')
       setApiLoading(false)
       toast.error(err.message)
     })
@@ -128,8 +129,8 @@ const Login = () => {
         No account?
         <Link className="underline" to="/registration">Sign up</Link>
       </p>
-      <GoogleLogin/>
     </form>
+    <GoogleLogin/>
   </div>
 </div>
 </section>

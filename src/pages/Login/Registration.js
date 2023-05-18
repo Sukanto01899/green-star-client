@@ -154,10 +154,9 @@ const Registration = () => {
         No account?
         <Link className="underline" to="/login">Log in</Link>
       </p>
-      
-      <GoogleLogin/>
 
     </form>
+    <GoogleLogin/>
   </div>
 </div>
 

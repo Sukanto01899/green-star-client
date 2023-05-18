@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { RotatingLines } from 'react-loader-spinner';
-import PopupBG from '../../../components/Popup/PopupBG';
+import PopupBG from '../../components/Popup/PopupBG';
 import BlogCard from './BlogCard';
 
 const Blogs = () => {
