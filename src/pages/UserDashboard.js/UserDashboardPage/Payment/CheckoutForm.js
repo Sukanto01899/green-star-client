@@ -18,6 +18,7 @@ const CheckoutForm = ({order}) => {
     const [paymentLoading, setPaymentLoading] = useState(false)
 
     useEffect(()=>{
+      setPaymentLoading(true)
         axios.post(`https://green-star.onrender.com/create-payment-intent`, {price}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access-token')}`
@@ -26,10 +27,12 @@ const CheckoutForm = ({order}) => {
         .then(res => {
             if(res.data.clientSecret){
                 setClientSecret(res.data.clientSecret)
+                setPaymentLoading(false)
             }
         })
         .catch(err => {
             toast.error(err.message)
+            setPaymentLoading(false)
         })
     }, [price])
 
