@@ -9,7 +9,7 @@ const DashboardHome = () => {
     const [signOut] = useSignOut(auth)
     
     useEffect(()=>{
-        fetch(`http://localhost:5000/user-dashboard/data/${user.email}`,{
+        fetch(`https://green-star.onrender.com/user-dashboard/data/${user.email}`,{
             method: 'GET',
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('access-token')}`

@@ -19,7 +19,7 @@ const CheckoutForm = ({order}) => {
 
     useEffect(()=>{
         setPaymentLoading(true)
-        axios.post(`http://localhost:5000/create-payment-intent`, {price}, {
+        axios.post(`https://green-star.onrender.com/create-payment-intent`, {price}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             }
@@ -86,7 +86,7 @@ const CheckoutForm = ({order}) => {
             setCardError('')
             setTransactionID(paymentIntent.id)
             // Update order status
-              axios.patch(`http://localhost:5000/payment/success/${_id}`, {trxID: transactionID}, {
+              axios.patch(`https://green-star.onrender.com/payment/success/${_id}`, {trxID: transactionID}, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                 }

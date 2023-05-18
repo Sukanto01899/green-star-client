@@ -14,7 +14,7 @@ const ProductRow = ({product, refetch}) => {
 
   const handleDeleteProduct = ()=>{
     const loadingToast = toast.loading('Please wait...')
-    axios.delete(`http://localhost:5000/product/delete/${_id}/${user.email}`, {
+    axios.delete(`https://green-star.onrender.com/product/delete/${_id}/${user.email}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access-token')}`
       }

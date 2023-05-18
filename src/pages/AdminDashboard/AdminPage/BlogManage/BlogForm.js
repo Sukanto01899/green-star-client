@@ -36,7 +36,7 @@ const BlogForm = () => {
        .then(data => {
          if(data.url){
             const blog = {...blogObj, image: data.url}
-            axios.post(`http://localhost:5000/blog/add/${user.email}`, {blog}, {
+            axios.post(`https://green-star.onrender.com/blog/add/${user.email}`, {blog}, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                 }

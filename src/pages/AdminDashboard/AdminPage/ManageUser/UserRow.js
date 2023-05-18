@@ -14,7 +14,7 @@ const UserRow = ({user, refetch}) => {
 
     const handleAdminChangeRole = ()=>{
       const loadingToast = toast.loading('Please wait...')
-      axios.patch(`http://localhost:5000/role/change/${authUser.email}?role=admin`,{email}, {
+      axios.patch(`https://green-star.onrender.com/role/change/${authUser.email}?role=admin`,{email}, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access-token')}`
         }
@@ -31,7 +31,7 @@ const UserRow = ({user, refetch}) => {
 
     const handleUserChangeRole = ()=>{
       const loadingToast = toast.loading('Please wait...')
-      axios.patch(`http://localhost:5000/role/change/${authUser.email}?role=user`,{email}, {
+      axios.patch(`https://green-star.onrender.com/role/change/${authUser.email}?role=user`,{email}, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access-token')}`
         }

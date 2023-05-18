@@ -11,12 +11,12 @@ const ReviewCard = ({order, setShowReviewPopup, showReviewPopup}) => {
   const [image, setImage] = useState('')
 
   useEffect(()=>{
-    axios(`http://localhost:5000/rating/check/${user?.email}/${order?.productId}`)
+    axios(`https://green-star.onrender.com/rating/check/${user?.email}/${order?.productId}`)
     .then(res => setReview(res.data))
   }, [user, order])
 
   useEffect(()=>{
-    axios(`http://localhost:5000/product/image/${order?.productId}`)
+    axios(`https://green-star.onrender.com/product/image/${order?.productId}`)
     .then(res => setImage(res.data.image))
   }, [order])
    

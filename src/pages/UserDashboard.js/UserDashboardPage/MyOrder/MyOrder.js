@@ -18,7 +18,7 @@ const MyOrder = () => {
   const [limit, setLimit] = useState(10);
 
   useEffect(()=>{
-    axios.get(`http://localhost:5000/order-list/${user.email}?status=${orderStatus}`, {
+    axios.get(`https://green-star.onrender.com/order-list/${user.email}?status=${orderStatus}`, {
       headers:{
         'authorization': `Bearer ${localStorage.getItem('access-token')}`
       }
@@ -51,7 +51,7 @@ const MyOrder = () => {
 
   const handleOrderCancel = (id)=>{
     const loadingToast = toast.loading('Please wait...')
-    axios.patch(`http://localhost:5000/order/cancel/${id}`,{}, {
+    axios.patch(`https://green-star.onrender.com/order/cancel/${id}`,{}, {
         headers: {
             'authorization': `Bearer ${localStorage.getItem('access-token')}`
         }

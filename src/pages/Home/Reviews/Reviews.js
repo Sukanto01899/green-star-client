@@ -12,7 +12,7 @@ const Reviews = () => {
     const [reviews, setREviews] = useState([]);
 
     useEffect(()=>{
-        axios(`http://localhost:5000/reviews/get`)
+        axios(`https://green-star.onrender.com/reviews/get`)
         .then(res => setREviews(res.data))
     }, [])
 

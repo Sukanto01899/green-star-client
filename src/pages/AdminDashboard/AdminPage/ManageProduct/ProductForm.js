@@ -45,7 +45,7 @@ const ProductForm = () => {
        .then(data => {
          if(data.url){
             const product = {...productObj, image: data.url}
-            axios.post(`http://localhost:5000/product/upload/${user.email}`, {product}, {
+            axios.post(`https://green-star.onrender.com/product/upload/${user.email}`, {product}, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                 }

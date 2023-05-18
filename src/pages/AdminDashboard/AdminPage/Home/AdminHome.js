@@ -15,7 +15,7 @@ const AdminHome = () => {
     const navigate = useNavigate()
 
     useEffect(()=>{
-        axios(`http://localhost:5000/admin-dashboard/${user.email}`, {
+        axios(`https://green-star.onrender.com/admin-dashboard/${user.email}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             }

@@ -13,7 +13,7 @@ const Navigation = () => {
   
   const menus = [
     {name: 'Home', route: '/'},
-    {name: 'About', route: '/about'},
+    {name: 'My Portfolio', route: '/my-portfolio'},
     {name: 'Career', route: '/career'},
     {name: 'History', route: '/history'},
     {name: 'Service', route: '/service'},

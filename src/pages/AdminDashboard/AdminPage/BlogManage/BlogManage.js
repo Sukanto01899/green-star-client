@@ -10,7 +10,7 @@ const BlogManage = () => {
     const navigate = useNavigate()
 
     useEffect(()=>{
-        axios.get(`http://localhost:5000/blogs`)
+        axios.get(`https://green-star.onrender.com/blogs`)
         .then(res => setBlogs(res.data))
     }, [])
     return (

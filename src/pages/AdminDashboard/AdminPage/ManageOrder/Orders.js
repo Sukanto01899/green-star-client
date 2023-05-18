@@ -19,7 +19,7 @@ const MyOrder = () => {
 
 
   useEffect(()=>{
-    axios(`http://localhost:5000/all-order/${user.email}?status=${orderStatus}&limit=${limit}&page=${page}`, {
+    axios(`https://green-star.onrender.com/all-order/${user.email}?status=${orderStatus}&limit=${limit}&page=${page}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access-token')}`
       }
@@ -58,7 +58,7 @@ const MyOrder = () => {
   const handleStatusChange = async (id, status, setShowPopup)=>{
     const loadingToast = toast.loading('Please wait...');
     try{
-      const response = await axios.patch(`http://localhost:5000/order/status-change/${user.email}/${id}?status=${status}`,{}, {
+      const response = await axios.patch(`https://green-star.onrender.com/order/status-change/${user.email}/${id}?status=${status}`,{}, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access-token')}`
       }

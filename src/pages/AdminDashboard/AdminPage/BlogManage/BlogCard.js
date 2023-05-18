@@ -12,7 +12,7 @@ const BlogCard = ({blog}) => {
 
     const handleDeleteBlog = ()=>{
         const loadingToast = toast.loading('Please wait...')
-        axios.delete(`http://localhost:5000/blog/delete/${user.email}/${blog._id}`, {
+        axios.delete(`https://green-star.onrender.com/blog/delete/${user.email}/${blog._id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             }

@@ -12,7 +12,7 @@ const Payment = () => {
     const [order, setOrder] = useState(null);
 
     useEffect(()=>{
-        axios(`http://localhost:5000/order/get/${id}`, {
+        axios(`https://green-star.onrender.com/order/get/${id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             }

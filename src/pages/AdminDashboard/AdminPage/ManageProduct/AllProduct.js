@@ -15,7 +15,7 @@ const AllProduct = () => {
   const [limit, setLimit] = useState(10);
 
   const {data, refetch} = useQuery(['products'], ()=>{
-    fetch(`http://localhost:5000/all-product/${user.email}`, {
+    fetch(`https://green-star.onrender.com/all-product/${user.email}`, {
       method: 'GET', 
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access-token')}`

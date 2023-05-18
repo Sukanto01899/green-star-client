@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const OrderRow = ({order, handleOrderCancel}) => {
-  const {title, userEmail, productId, quantity, price, status, _id} = order;
+  const {title, quantity, price, status, _id} = order;
   const navigation = useNavigate()
     return (
         <tr>

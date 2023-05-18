@@ -32,7 +32,7 @@ const ReviewPopup = ({order, setShowReviewPopup, reviewId}) => {
       rating: rating
     }
    
-    axios.put(`http://localhost:5000/review/add/${user?.email}?id=${reviewId}`,{review}, {
+    axios.put(`https://green-star.onrender.com/review/add/${user?.email}?id=${reviewId}`,{review}, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access-token')}`
       }

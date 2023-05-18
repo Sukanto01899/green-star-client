@@ -16,8 +16,11 @@ import AllUser from './pages/AdminDashboard/AdminPage/ManageUser/AllUser';
 import Security from './pages/AdminDashboard/AdminPage/Security';
 import Error from './pages/Error/Error';
 import Footer from './pages/Footer/Footer';
-import Blogs from './pages/Home/Blogs/Blogs';
+
+import BlogPage from './pages/Blogs/BlogPage';
+import Blogs from './pages/Blogs/Blogs';
 import Home from './pages/Home/Home';
+import MyPortfolio from './pages/Home/MyPortfolio/MyPortfolio';
 import Navigation from './pages/Home/Shared/Navigation';
 import Login from './pages/Login/Login';
 import Registration from './pages/Login/Registration';
@@ -65,6 +68,8 @@ function App() {
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/purchase/:id' element={<UserAuth><ProductPage/></UserAuth>}></Route>
         <Route path='/blogs' element={<Blogs/>}></Route>
+        <Route path='/blog/:id' element={<BlogPage/>}></Route>
+        <Route path='/my-portfolio' element={<MyPortfolio/>}></Route>
         <Route path='/dashboard' element={<UserAuth><UserDashboard/></UserAuth>}>
           <Route index element={<DashboardHome/>}/>
           <Route path='my-order' element={<MyOrder/>}/>
