@@ -113,7 +113,7 @@ const Navigation = () => {
               <HiLogout/>
             </button> : <Link
               className="rounded-md w-full bg-gray-100 ml-8 px-5 py-2.5 text-sm font-medium text-universal"
-              to='/register'
+              to='/registration'
             >
               Register
             </Link>}

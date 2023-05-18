@@ -71,14 +71,11 @@ const Login = () => {
       Login Now
     </h1>
 
-    <p className="mx-auto mt-4 max-w-md text-center text-gray-500">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sunt
-      dolores deleniti inventore quaerat mollitia?
-    </p>
-
+   
+    <div className='mt-6 mb-0 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-white'>
     <form
       onSubmit={handleSubmit(onLogin)}
-      className="mt-6 mb-0 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-white"
+      className="space-y-4 rounded-lg mb-4"
     >
       <p className="text-center text-lg font-medium">Sign in to your account</p>
 
@@ -129,7 +126,10 @@ const Login = () => {
         <Link className="underline" to="/registration">Sign up</Link>
       </p>
     </form>
+
     <GoogleLogin/>
+    </div>
+    
   </div>
 </div>
 </section>

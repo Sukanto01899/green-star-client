@@ -44,22 +44,18 @@ const Registration = () => {
   
     return (
         
-<div>
+<div className='bg-light-main'>
   {loading || updating ? <Loader/> : null}
-<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 ">
   <div className="mx-auto max-w-lg">
     <h1 className="text-center text-2xl font-bold text-universal sm:text-3xl">
       Registration Now
     </h1>
 
-    <p className="mx-auto mt-4 max-w-md text-center text-gray-500">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sunt
-      dolores deleniti inventore quaerat mollitia?
-    </p>
-
+    <div className='mt-6 mb-0 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-white'>
     <form
       onSubmit={handleSubmit(onRegistration)}
-      className="mt-6 mb-0 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
+      className=" space-y-4"
     >
       <p className="text-center text-lg font-medium">Sign up for an account</p>
 
@@ -156,7 +152,10 @@ const Registration = () => {
       </p>
 
     </form>
+
     <GoogleLogin/>
+    </div>
+    
   </div>
 </div>
 
