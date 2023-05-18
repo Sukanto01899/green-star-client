@@ -13,7 +13,7 @@ const CheckoutForm = ({order}) => {
     const [success, setSuccess] = useState('');
     const [transactionID, setTransactionID] = useState('');
     const [clientSecret, setClientSecret] = useState("");
-    const {price, userEmail, _id} = order;
+    const {price, userEmail, _id, title, quantity} = order;
     const [successPopup, setSuccessPopup] = useState(false);
     const [paymentLoading, setPaymentLoading] = useState(false)
 
@@ -86,13 +86,12 @@ const CheckoutForm = ({order}) => {
             setCardError('')
             setTransactionID(paymentIntent.id)
             // Update order status
-              axios.patch(`https://green-star.onrender.com/payment/success/${_id}`, {trxID: transactionID}, {
+              axios.patch(`https://green-star.onrender.com/payment/success/${_id}?email=${userEmail}`, {trxID: transactionID, title: title, price: price, quantity}, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                 }
               })
               .then(res => {
-                console.log(res)
                 if(res.data.acknowledged){
                     setSuccess('Your payment completed')
                     setPaymentLoading(false)
