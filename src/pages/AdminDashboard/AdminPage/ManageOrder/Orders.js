@@ -39,6 +39,7 @@ const MyOrder = () => {
 
   const handleStatus = (status)=>{
     setOrders(null)
+    setPage(0)
     setOrderStatus(status);
   }
 
@@ -83,7 +84,7 @@ const MyOrder = () => {
 
            
 
-            <div className='flex justify-between items-center'>
+            <div className='flex flex-col md:flex-row justify-between items-center'>
             <nav className="flex border-b border-gray-100 text-sm font-medium">
   <button onClick={()=> handleStatus('all')} className={`-mb-px border-b ${'all'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
     All order

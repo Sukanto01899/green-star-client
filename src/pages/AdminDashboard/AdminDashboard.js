@@ -106,7 +106,7 @@ const AdminDashboard = () => {
 
       <details className="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-          className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+          className={`flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${show || 'hidden'}`}
         >
           <div className="flex items-center gap-2">
             <AccountIcon/>
@@ -196,14 +196,14 @@ const AdminDashboard = () => {
           <span class="sr-only">Menu</span>
           <img
             alt="Man"
-            src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+            src={user?.photoURL}
             className="h-10 w-10 mr-3 rounded-full object-cover"
           />
 
           <p class="ms-2 hidden text-left text-xs sm:block">
-            <strong class="block font-medium">Eric Frusciante</strong>
+            <strong class="block font-medium">{user?.displayName}</strong>
 
-            <span class="text-gray-500"> eric@frusciante.com </span>
+            <span class="text-gray-500"> {user?.email} </span>
           </p>
 
 </button>

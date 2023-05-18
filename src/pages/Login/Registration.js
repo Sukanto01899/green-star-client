@@ -31,6 +31,7 @@ const Registration = () => {
     }
     await createUserWithEmailAndPassword(email, password);
     await updateProfile({displayName: name});
+    toast.success('Successfully Account Created')
   }
 
   if(token){
