@@ -14,7 +14,7 @@ const MyPortfolio = () => {
         </h1>
 
         <p class="mt-1.5 text-sm text-gray-500">
-          Let's write a new blog post! 🎉
+          Email: sukanto01899@gmail.com
         </p>
       </div>
 
@@ -45,6 +45,12 @@ const MyPortfolio = () => {
 
    <div>
      <h1 className='text-xl my-6 font-bold'>Projects</h1>
+     <div className='grid gap-5 grid-cols-1 lg:grid-cols-2'>
+       <a target='_blank' className='bg-universal text-white py-2 px-4 rounded-md hover:shadow-lg' href="https://sukanto01899.github.io/Tic-Tac-Toe/" rel="noreferrer">Play Tic Tac Toe</a>
+       <a target='_blank' className='bg-universal text-white py-2 px-4 rounded-md hover:shadow-lg' href="https://sukanto01899.github.io/qr-code-scaner/" rel="noreferrer">Scan QR Code</a>
+       <a target='_blank' className='bg-universal text-white py-2 px-4 rounded-md hover:shadow-lg' href="https://sukanto01899.github.io/QR-code-generator/" rel="noreferrer">Generate QR Code</a>
+       <a target='_blank' className='bg-universal text-white py-2 px-4 rounded-md hover:shadow-lg' href="https://sukanto01899.github.io/javascript-Alarm/" rel="noreferrer">Set Alarm</a>
+     </div>
    </div>
 
   </div>

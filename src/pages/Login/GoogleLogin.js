@@ -14,10 +14,15 @@ const GoogleLogin = () => {
   if(token){
     navigate(from, {replace: true})
   }
+  if(error){
+    return <h1>{error.message}</h1>
+  }
+
+  console.log(user)
 
     return (
         <>
-            <button
+           <button
         onClick={()=> signInWithGoogle()}
         className="w-full rounded-lg bg-white border-2 border-universal py-3 font-medium text-universal flex justify-center items-center space-x-4"
       >

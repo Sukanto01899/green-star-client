@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-hot-toast";
 import PopupBG from "../../../../components/Popup/PopupBG";
 import auth from "../../../../firebase.init";
 import ReviewPopup from "./ReviewPopup";
@@ -13,11 +14,17 @@ const ReviewCard = ({order, setShowReviewPopup, showReviewPopup}) => {
   useEffect(()=>{
     axios(`https://green-star.onrender.com/rating/check/${user?.email}/${order?.productId}`)
     .then(res => setReview(res.data))
+    .catch(err => {
+      toast.error(err.message)
+  })
   }, [user, order])
 
   useEffect(()=>{
     axios(`https://green-star.onrender.com/product/image/${order?.productId}`)
     .then(res => setImage(res.data.image))
+    .catch(err => {
+      toast.error(err.message)
+  })
   }, [order])
    
     return (

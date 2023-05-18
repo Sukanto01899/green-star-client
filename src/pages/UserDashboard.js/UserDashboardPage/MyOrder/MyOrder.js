@@ -10,7 +10,7 @@ import OrderRow from './OrderRow';
 
 const MyOrder = () => {
   const [orders, setOrders] = useState(null)
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [orderStatus, setOrderStatus] = useState('all');
   const [signOut] = useSignOut(auth);
   const [totalPages, setTotalPages] = useState(0);
@@ -18,19 +18,22 @@ const MyOrder = () => {
   const [limit, setLimit] = useState(10);
 
   useEffect(()=>{
-    axios.get(`https://green-star.onrender.com/order-list/${user.email}?status=${orderStatus}`, {
+    axios.get(`https://green-star.onrender.com/order-list/${user.email}?status=${orderStatus}&limit=${limit}&page=${page}`, {
       headers:{
         'authorization': `Bearer ${localStorage.getItem('access-token')}`
       }
     })
-    .then(res => setOrders(res.data))
+    .then(res => {
+      setOrders(res.data.cursor)
+      setTotalPages(Math.ceil(res.data.total_order / limit))
+    })
     .catch(err => {
       toast.error(err.code)
       if(err.response.status===403 || err.response.status === 401){
         return signOut()
       }
     })
-  }, [orderStatus, user.email, signOut])
+  }, [orderStatus, user.email, signOut, limit, page])
 
   const handleStatus = (status)=>{
     setOrders(null)
@@ -68,7 +71,7 @@ const MyOrder = () => {
         <div>
             <h1 className='text-xl'>My Order</h1>
 
-            <div className='flex justify-between items-center'>
+            <div className='flex flex-col md:flex-row justify-between items-center'>
             <nav className="flex border-b border-gray-100 text-sm font-medium">
   <button onClick={()=> handleStatus('all')} className={`-mb-px border-b ${'all'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
     All order

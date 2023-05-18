@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-hot-toast';
 import { RotatingLines } from 'react-loader-spinner';
 import axiosApi from '../../../../api/axiosApi';
 import PopupBG from '../../../../components/Popup/PopupBG';
@@ -13,8 +14,12 @@ const AddReview = () => {
 
     useEffect(()=>{
         axiosApi.get(`/order-list/${user.email}?status=shipped`)
-        .then(res => setOrders(res.data))
-    }, [user.email])
+        .then(res => setOrders(res.data.cursor))
+        .catch(err => {
+            toast.error(err.message)
+            setShowReviewPopup(false)
+        })
+    }, [user])
     
     return (
         <div>
