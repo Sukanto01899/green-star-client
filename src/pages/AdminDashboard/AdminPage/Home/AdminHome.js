@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { HiCash, HiGift, HiTrendingUp, HiUsers } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 import { ResponsiveContainer } from 'recharts';
 import auth from '../../../../firebase.init';
 import SellingChart from './SellingChart';
@@ -10,7 +11,8 @@ import TotalPieChart from './TotalPieChart';
 const AdminHome = () => {
     const [user] = useAuthState(auth);
     const [panelData, setPanelData] = useState(null);
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState([]);
+    const navigate = useNavigate()
 
     useEffect(()=>{
         axios(`http://localhost:5000/admin-dashboard/${user.email}`, {
@@ -64,6 +66,7 @@ const AdminHome = () => {
         </button>
 
         <button
+        onClick={()=> navigate('/admin/add-blogs')}
           class="block rounded-lg bg-universal px-5 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring"
           type="button"
         >

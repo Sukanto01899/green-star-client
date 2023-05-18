@@ -22,7 +22,7 @@ const Reviews = () => {
     className="mx-auto max-w-[1340px] px-4 py-12 sm:px-6 lg:px-8 sm:py-16 lg:me-0 lg:pe-0 lg:ps-8"
   >
     <div className="max-w-7xl items-end justify-between sm:flex sm:pe-6 lg:pe-8">
-      <h2 className="max-w-xl text-4xl font-bold tracking-tight sm:text-5xl">
+      <h2 className="max-w-xl text-3xl font-bold sm:text-4xl text-universal">
         Read trusted reviews from our customers
       </h2>
     </div>

@@ -25,8 +25,6 @@ const AllProduct = () => {
     .then(resRcv => setProducts(resRcv))
   })
 
-
-
   const handlePrevious = ()=>{
     if (page <= 0) return;
     let count = page
@@ -38,6 +36,8 @@ const AllProduct = () => {
     let count = page
     setPage(count +=1)
   }
+
+  
 
     return (
         <div>
@@ -66,17 +66,17 @@ const AllProduct = () => {
         <th
           class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Date of Birth
+          Stock
         </th>
         <th
           class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Role
+          Price
         </th>
         <th
           class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
         >
-          Salary
+          Brand
         </th>
         <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">Action</th>
       </tr>
@@ -84,7 +84,7 @@ const AllProduct = () => {
 
     <tbody class="divide-y divide-gray-200">
      
-      {products ? products.map(product => <ProductRow product={product}/>) : <PopupBG>
+      {products ? products.map(product => <ProductRow product={product} refetch={refetch}/>) : <PopupBG>
       <RotatingLines
   strokeColor="grey"
   strokeWidth="5"

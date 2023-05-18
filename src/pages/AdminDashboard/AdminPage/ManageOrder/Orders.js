@@ -58,8 +58,8 @@ const MyOrder = () => {
   const handleStatusChange = async (id, status, setShowPopup)=>{
     const loadingToast = toast.loading('Please wait...');
     try{
-      const response = await axios.patch(`http://localhost:5000/order/status-change/${id}?status=${status}`, {
-      Headers: {
+      const response = await axios.patch(`http://localhost:5000/order/status-change/${user.email}/${id}?status=${status}`,{}, {
+      headers: {
         'Authorization': `Bearer ${localStorage.getItem('access-token')}`
       }
     })
@@ -71,10 +71,9 @@ const MyOrder = () => {
     }
     }
     catch(err){
-      toast.error(err.message)
+      toast.error(err.message, {id: loadingToast})
+      setShowPopup(false)
     }
-    
-      
   }
   
     return (

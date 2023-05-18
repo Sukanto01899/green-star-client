@@ -26,10 +26,10 @@ const DashboardHome = () => {
     }, [user, signOut])
 
     const orderState = [
-        {state: "Pending Order", count: orders ? orders.filter(order => order.status === 'pending').length : 'Loading...'},
-        {state: "Paid Order", count: orders ? orders.filter(order => order.status === 'paid').length : 'Loading...'},
-        {state: "Received Order", count: orders ? orders.filter(order => order.status === 'shipped').length : 'Loading...'},
-        {state: "Canceled Order", count: orders ? orders.filter(order => order.status === 'canceled').length : 'Loading...'}
+        {state: "Pending Order", count: orders ? orders?.filter(order => order.status === 'pending').length : 'Loading...'},
+        {state: "Paid Order", count: orders ? orders?.filter(order => order.status === 'paid').length : 'Loading...'},
+        {state: "Received Order", count: orders ? orders?.filter(order => order.status === 'shipped').length : 'Loading...'},
+        {state: "Canceled Order", count: orders ? orders?.filter(order => order.status === 'canceled').length : 'Loading...'}
     ]
 
     return (

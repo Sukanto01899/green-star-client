@@ -4,14 +4,12 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { HiXMark } from "react-icons/hi2";
-import { useParams } from 'react-router-dom';
 import { PlusIcon } from '../../../../assets/icons/icons';
 import auth from '../../../../firebase.init';
 import './manageproduct.css';
 
 
 const ProductForm = () => {
-    const {id} = useParams();
     const [user] = useAuthState(auth);
     const { register, handleSubmit, watch,reset, formState: { errors } } = useForm();
     const [product, setProduct] = useState({});
@@ -37,6 +35,8 @@ const ProductForm = () => {
             features: features
         }
 
+      const loadingToast = toast.loading('Please wait...')
+
        fetch(url, {
         method: 'POST',
         body: file
@@ -51,14 +51,14 @@ const ProductForm = () => {
                 }
             })
             .then(res => {
-                if(res.acknowledged){
-                    toast.success('Product successfully added')
+                if(res.data.acknowledged){
+                    toast.success('Product successfully added', {id: loadingToast})
                 }
             })
-            .catch(err => toast.error(err.message))
+            .catch(err => toast.error(err.message, {id: loadingToast}))
          }
        })
-       .catch(err => toast.error(err.message))
+       .catch(err => toast.error(err.message, {id: loadingToast}))
     }
 
     const handleFeature =()=>{

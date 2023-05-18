@@ -2,7 +2,7 @@ import React from 'react';
 import { HiXMark } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
 
-const ConfirmPopup = ({price, setConfirmPopup}) => {
+const ConfirmPopup = ({price, setConfirmPopup, orderId}) => {
     return (
         
             <section class="rounded-3xl shadow-2xl bg-white">
@@ -18,7 +18,7 @@ const ConfirmPopup = ({price, setConfirmPopup}) => {
 
     <Link
       class="mt-8 inline-block w-full rounded-full bg-universal py-4 text-sm font-bold text-white shadow-xl"
-      href=""
+      to={`/dashboard/payment/${orderId}`}
     >
       Complete Payment Now ( $ {price} )
     </Link>

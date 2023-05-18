@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import axiosApi from '../../api/axiosApi';
 import { StarIconFill, StarIconHole } from '../../assets/icons/icons';
@@ -16,14 +17,14 @@ const ProductPage = () => {
   const [user, loading, error] = useAuthState(auth);
   const [product, setProduct] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [confirmPopup, setConfirmPopup] = useState(false)
+  const [confirmPopup, setConfirmPopup] = useState(false);
+  const [orderId, setOrderId] = useState('')
   
   useEffect(()=>{
     axiosApi(`/product/${id}`)
     .then(res => setProduct(res.data))
+    .then(err => toast.error(err.message))
   }, [id])
-
-
   
     return (
       <div className='bg-light-main'>
@@ -118,9 +119,6 @@ const ProductPage = () => {
 
           <div className="mt-8 flex gap-4">
           
-
-
-
             <button
              onClick={()=>setShowPopup(true)}
               type="submit"
@@ -130,9 +128,9 @@ const ProductPage = () => {
             </button>
             {/* Popup */}
             {
-              showPopup && <PopupBG><ProductPopup product={product} setShowPopup={setShowPopup} setConfirmPopup={setConfirmPopup}/></PopupBG>
+              showPopup && <PopupBG><ProductPopup setOrderId={setOrderId} product={product} setShowPopup={setShowPopup} setConfirmPopup={setConfirmPopup}/></PopupBG>
             }
-            {confirmPopup && <PopupBG><ConfirmPopup price={product?.price} setConfirmPopup={setConfirmPopup}/></PopupBG>}
+            {confirmPopup && <PopupBG><ConfirmPopup orderId={orderId} price={product?.price} setConfirmPopup={setConfirmPopup}/></PopupBG>}
 
 
           </div>

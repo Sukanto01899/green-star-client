@@ -32,7 +32,10 @@ const AdminLogin = () => {
         setApiLoading(false)
       }
     })
-    .catch(err => toast.error(err.message))
+    .catch(err => {
+      toast.error(err.message)
+      setApiLoading(false)
+    })
   }
 
   if(error){

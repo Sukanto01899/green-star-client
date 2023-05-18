@@ -79,7 +79,7 @@ const AllUser = () => {
 
     <tbody class="divide-y divide-gray-200">
      
-      {users ? users.map(user=> <UserRow user={user}/>) : <PopupBG>
+      {users ? users.map(user=> <UserRow user={user} refetch={refetch}/>) : <PopupBG>
       <RotatingLines
   strokeColor="grey"
   strokeWidth="5"

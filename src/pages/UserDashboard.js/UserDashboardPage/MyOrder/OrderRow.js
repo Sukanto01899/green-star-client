@@ -26,6 +26,7 @@ const OrderRow = ({order, handleOrderCancel}) => {
   </button>  : null}
   {status === 'pending' ? <>
   <button
+  onClick={()=> navigation(`/dashboard/payment/${_id}`)}
     class="inline-block p-2 text-gray-700 hover:bg-gray-50 focus:relative"
     title="Delete Product"
   >

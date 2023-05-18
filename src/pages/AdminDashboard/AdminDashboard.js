@@ -96,12 +96,12 @@ const AdminDashboard = () => {
       </Link>
 
       <Link
-        to="/admin/Invoices"
+        to="/admin/blogs"
         className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
       >
         <Invoice/>
 
-        <span className="text-sm font-medium"> Invoices </span>
+        <span className="text-sm font-medium"> Blogs </span>
       </Link>
 
       <details className="group [&_summary::-webkit-details-marker]:hidden">

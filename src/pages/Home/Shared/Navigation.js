@@ -13,12 +13,12 @@ const Navigation = () => {
   
   const menus = [
     {name: 'Home', route: '/'},
-    {name: 'About', route: '/blog'},
+    {name: 'About', route: '/about'},
     {name: 'Career', route: '/career'},
     {name: 'History', route: '/history'},
     {name: 'Service', route: '/service'},
     {name: 'Project', route: '/project'},
-    {name: 'Blog', route: '/blog'},
+    {name: 'Blog', route: '/blogs'},
   ]
 
   const handleLogout = ()=>{

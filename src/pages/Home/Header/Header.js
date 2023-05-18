@@ -4,7 +4,7 @@ const Header = () => {
     return (
         <section className='bg-light-main dark:bg-dark-main'>
   <div
-    class="mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8"
+    class="mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-24 lg:px-8"
   >
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
       <div

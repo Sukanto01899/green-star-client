@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 import axiosApi from '../../api/axiosApi';
 import auth from '../../firebase.init';
 
-const ProductPopup = ({product, setShowPopup, setConfirmPopup}) => {
+const ProductPopup = ({product, setShowPopup, setConfirmPopup, setOrderId}) => {
     const [user] = useAuthState(auth)
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const date = new Date();
@@ -23,6 +23,7 @@ const ProductPopup = ({product, setShowPopup, setConfirmPopup}) => {
         axiosApi.post('/order', {title: product.title,userEmail: user.email,productId: product._id,quantity, price: product.price * quantity,address: address,number: number, status: 'pending', time: `${day}-${month}-${year}`})
         .then(res => {
           if(res.data.insertedId){
+            setOrderId(res.data.insertedId)
             toast.success('Product added to purchase')
             setShowPopup(false)
             setConfirmPopup(true)
@@ -32,12 +33,12 @@ const ProductPopup = ({product, setShowPopup, setConfirmPopup}) => {
       }
 
     return (
-        <div className='bg-white p-4 shadow-md'>
-            <div className='flex justify-between'>
-                <h1>Buy Now</h1>
+        <div className='bg-white p-5 shadow-md w-[450px] rounded-md'>
+            <div className='flex justify-between mb-4'>
+                <h1 className='text-semibold'>Buy Now</h1>
                 <span className='text-red-500 cursor-pointer' onClick={()=> setShowPopup(false)}>Cancel</span>
             </div>
-            <h2>{product?.title}</h2>
+            <h2 className='text-sm text-universal mb-3'>{product?.title}</h2>
             <form className='space-y-2' onSubmit={handleSubmit(handlePurchase)}>
             <div>
                 <label htmlFor="name">Name</label>
@@ -60,7 +61,7 @@ const ProductPopup = ({product, setShowPopup, setConfirmPopup}) => {
             <input id='quantity' className='w-full' type="number" {...register('quantity')} placeholder={`Minimum buy ${product?.minBuy}`}/>
             </div>
 
-            <input className='bg-universal w-full mt-4 text-white cursor-pointer' type="submit" name="" id="" />
+            <input className='bg-universal w-full mt-4 text-white cursor-pointer py-1' type="submit" name="" id="" value='Buy Now' />
             </form>
         </div>
     );

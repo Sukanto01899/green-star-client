@@ -20,8 +20,7 @@ const ProductCard = ({product}) => {
       </h3>
 
       <p className="mt-1.5 max-w-[45ch] text-xs text-dark-main dark:text-light-main">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi nobis,
-        quia soluta quisquam voluptatem nemo.
+        {product.description.substring(0, 100)}
       </p>
       <Link
   class="group relative inline-block text-sm font-medium text-universal focus:outline-none focus:ring active:text-red-500 mt-1"

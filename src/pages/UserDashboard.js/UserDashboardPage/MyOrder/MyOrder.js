@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { toast } from 'react-hot-toast';
 import { RotatingLines } from 'react-loader-spinner';
+import { NextIcon, PreviousIcon } from '../../../../assets/icons/icons';
 import PopupBG from '../../../../components/Popup/PopupBG';
 import auth from '../../../../firebase.init';
 import OrderRow from './OrderRow';
@@ -11,7 +12,10 @@ const MyOrder = () => {
   const [orders, setOrders] = useState(null)
   const [user, loading] = useAuthState(auth);
   const [orderStatus, setOrderStatus] = useState('all');
-  const [signOut] = useSignOut(auth)
+  const [signOut] = useSignOut(auth);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
 
   useEffect(()=>{
     axios.get(`http://localhost:5000/order-list/${user.email}?status=${orderStatus}`, {
@@ -33,6 +37,18 @@ const MyOrder = () => {
     setOrderStatus(status);
   }
 
+  const handlePrevious = ()=>{
+    if (page <= 0) return;
+    let count = page
+    setPage(count -=1)
+  }
+
+  const handleNext = ()=>{
+    if (totalPages === page) return;
+    let count = page
+    setPage(count +=1)
+  }
+
   const handleOrderCancel = (id)=>{
     const loadingToast = toast.loading('Please wait...')
     axios.patch(`http://localhost:5000/order/cancel/${id}`,{}, {
@@ -52,7 +68,7 @@ const MyOrder = () => {
         <div>
             <h1 className='text-xl'>My Order</h1>
 
-            <div>
+            <div className='flex justify-between items-center'>
             <nav className="flex border-b border-gray-100 text-sm font-medium">
   <button onClick={()=> handleStatus('all')} className={`-mb-px border-b ${'all'=== orderStatus ? 'text-cyan-500 border-current' : 'text-black border-transparent hover:text-cyan-500'} p-4`}>
     All order
@@ -74,6 +90,15 @@ const MyOrder = () => {
     Canceled
   </button>
 </nav>
+
+{/* Limit */}
+<div>
+   <select onChange={(e)=> setLimit(e.target.value)} className='h-[35px] w-[80px] text-sm rounded-md'>
+      <option value='10'>10</option>
+      <option value='15'>15</option>
+      <option value='20'>20</option>
+    </select>
+</div>
 
 </div>
 
@@ -126,6 +151,30 @@ const MyOrder = () => {
         </PopupBG>}
     </tbody>
   </table>
+</div>
+
+
+{/* Pagination */}
+<div class="flex items-center justify-center mt-4 gap-3">
+  <button onClick={()=> handlePrevious()}
+    class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+  >
+    <span class="sr-only">Next Page</span>
+    <PreviousIcon/>
+  </button>
+
+  <p class="text-sm text-gray-900">
+    {page + 1}
+    <span class="mx-0.25">/</span>
+    {totalPages}
+  </p>
+
+  <button onClick={()=> handleNext()}
+    class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+  >
+    <span class="sr-only">Next Page</span>
+    <NextIcon/>
+  </button>
 </div>
 
             
