@@ -9,7 +9,7 @@ const DashboardHome = () => {
     const [signOut] = useSignOut(auth)
     
     useEffect(()=>{
-        fetch(`http://localhost:5000/order-list/${user.email}?status=all`,{
+        fetch(`http://localhost:5000/user-dashboard/data/${user.email}`,{
             method: 'GET',
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('access-token')}`
@@ -26,10 +26,10 @@ const DashboardHome = () => {
     }, [user, signOut])
 
     const orderState = [
-        {state: "Pending Order", count: orders ? orders?.filter(order => order.status === 'pending').length : 'Loading...'},
-        {state: "Paid Order", count: orders ? orders?.filter(order => order.status === 'paid').length : 'Loading...'},
-        {state: "Received Order", count: orders ? orders?.filter(order => order.status === 'shipped').length : 'Loading...'},
-        {state: "Canceled Order", count: orders ? orders?.filter(order => order.status === 'canceled').length : 'Loading...'}
+        {state: "Pending Order", count: orders ? orders.pending_order : 'Loading...'},
+        {state: "Paid Order", count: orders ? orders.paid_order : 'Loading...'},
+        {state: "Received Order", count: orders ? orders.shipped_order : 'Loading...'},
+        {state: "Canceled Order", count: orders ? orders.canceled_order : 'Loading...'}
     ]
 
     return (
