@@ -14,7 +14,10 @@ const AddReview = () => {
 
     useEffect(()=>{
         axiosApi.get(`/order-list/${user.email}?status=shipped`)
-        .then(res => setOrders(res.data.cursor))
+        .then(res => {
+            console.log(res)
+            setOrders(res.data.cursor)
+        })
         .catch(err => {
             toast.error(err.message)
             setShowReviewPopup(false)

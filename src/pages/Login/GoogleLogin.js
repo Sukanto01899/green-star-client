@@ -18,8 +18,6 @@ const GoogleLogin = () => {
     return <h1>{error.message}</h1>
   }
 
-  console.log(user)
-
     return (
         <>
            <button

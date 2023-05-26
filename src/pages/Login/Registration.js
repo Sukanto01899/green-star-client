@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
@@ -12,36 +12,42 @@ import Loader from './Loader';
 
 
 const Registration = () => {
-  const { register, handleSubmit, watch,reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [
     createUserWithEmailAndPassword,
     user,
     loading,
     error,
   ] = useCreateUserWithEmailAndPassword(auth, {sendEmailVerification: true});
-  const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+  const [updateProfile, updating] = useUpdateProfile(auth);
   const navigate = useNavigate();
   const [token] = useToken(user, 'user')
   
-  const onRegistration =async  (data) => {
+  const onRegistration =(data) => {
     const {name, email, password, confirmPass} = data;
     if(password !== confirmPass){
       toast.error("Password not match");
       return;
     }
-    await createUserWithEmailAndPassword(email, password);
-    await updateProfile({displayName: name});
-    toast.success('Successfully Account Created')
+   createUserWithEmailAndPassword(email, password)
+   .then(res => {
+    if(res){
+      updateProfile({displayName: name});
+      toast.success('Account successfully created')
+    }
+   })
+   .catch(err => toast.error(error.message))
   }
 
-  if(token){
-    navigate('/')
-  }
+  useEffect(()=>{
+    if(token){
+      navigate('/')
+    }
+  }, [token, navigate])
 
   if(error){
     toast.error(error.message)
   }
-  
   
     return (
         
